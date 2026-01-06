@@ -1,0 +1,15 @@
+{
+    "name": "agriloop-monorepo",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "install": "cd server && npm install",
+        "build": "cd server && npm run build",
+        "start": "cd server && npm start",
+        "dev": "cd server && npm run dev"
+    },
+    "engines": {
+        "node": ">=16.0.0",
+        "npm": ">=8.0.0"
+    }
+}
