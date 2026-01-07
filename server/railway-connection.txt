@@ -1,0 +1,12 @@
+# Railway Database Connection Details
+# Copy this to use in your initialization script
+
+# PUBLIC Connection URL (for external access)
+RAILWAY_DATABASE_URL=postgresql://postgres:BKMeiajpTMXXVIBNvRFXKXfrElEziMoX@yamabiko.proxy.rlwy.net:11610/railway
+
+# Individual connection details
+DB_USER=postgres
+DB_HOST=yamabiko.proxy.rlwy.net
+DB_PORT=11610
+DB_PASSWORD=BKMeiajpTMXXVIBNvRFXKXfrElEziMoX
+DB_NAME=railway

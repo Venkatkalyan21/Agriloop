@@ -25,7 +25,7 @@ import messageRoutes from './routes/message.routes';
 
 // Create Express app
 const app: Express = express();
-const PORT = process.env.PORT || 8080;
+const PORT = parseInt(process.env.PORT || '8080', 10);
 
 // Apply middlewares
 // Enable CORS
@@ -80,8 +80,10 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 });
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Listen on 0.0.0.0 for Railway compatibility
+const HOST = '0.0.0.0';
+app.listen(PORT, HOST, () => {
+  console.log(`Server is running on ${HOST}:${PORT}`);
 });
 
 export default app; 
