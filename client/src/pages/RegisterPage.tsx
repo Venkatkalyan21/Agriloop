@@ -159,7 +159,7 @@ const BottomText = styled.p`
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -170,13 +170,13 @@ const RegisterPage: React.FC = () => {
     role: 'company',
     agreeTerms: false
   });
-  
+
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
+
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData({ ...formData, [name]: checked });
@@ -184,67 +184,67 @@ const RegisterPage: React.FC = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
-  
+
   const validateForm = () => {
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.companyName) {
       setError('Please fill in all required fields');
       return false;
     }
-    
+
     if (formData.password.length < 8) {
       setError('Password must be at least 8 characters long');
       return false;
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return false;
     }
-    
+
     if (!formData.agreeTerms) {
       setError('You must agree to the terms and conditions');
       return false;
     }
-    
+
     return true;
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsLoading(true);
     setError('');
-    
+
     try {
       console.log('Using API URL:', api.defaults.baseURL);
-      
+
       // Use our api client instead of direct axios
       const response = await api.post('/api/auth/register', {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         password: formData.password,
-        companyName: formData.companyName,
+        company_name: formData.companyName,
         role: formData.role
       });
-      
+
       console.log('Registration response:', response.data);
-      
+
       // If we get here, registration was successful
       // Extract user data from response
       const userData = response.data?.user || {};
       const token = response.data?.token || '';
-      
+
       if (!token) {
         console.error('No token received from server');
         setError('Registration successful but login failed. Please try logging in manually.');
         setIsLoading(false);
         return;
       }
-      
+
       // Login the user with the received data
       login({
         id: userData.id || Math.floor(Math.random() * 10000),
@@ -254,11 +254,11 @@ const RegisterPage: React.FC = () => {
         avatar: userData.avatar || '',
         token: token
       });
-      
+
       navigate('/dashboard');
     } catch (err: any) {
       console.error('Registration error:', err);
-      
+
       if (err.response) {
         console.error('Error response data:', err.response.data);
         console.error('Error response status:', err.response.status);
@@ -268,7 +268,7 @@ const RegisterPage: React.FC = () => {
       } else {
         console.error('Error message:', err.message);
       }
-      
+
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {
@@ -278,7 +278,7 @@ const RegisterPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <PageContainer>
       <RegisterCard
@@ -287,7 +287,7 @@ const RegisterPage: React.FC = () => {
         transition={{ duration: 0.4 }}
       >
         <Title>Create an Account</Title>
-        
+
         <Form onSubmit={handleSubmit}>
           <FormRow>
             <FormGroup>
@@ -301,7 +301,7 @@ const RegisterPage: React.FC = () => {
                 required
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label htmlFor="lastName">Last Name *</Label>
               <Input
@@ -314,7 +314,7 @@ const RegisterPage: React.FC = () => {
               />
             </FormGroup>
           </FormRow>
-          
+
           <FormGroup>
             <Label htmlFor="email">Email Address *</Label>
             <Input
@@ -327,7 +327,7 @@ const RegisterPage: React.FC = () => {
               required
             />
           </FormGroup>
-          
+
           <FormRow>
             <FormGroup>
               <Label htmlFor="password">Password *</Label>
@@ -341,7 +341,7 @@ const RegisterPage: React.FC = () => {
                 required
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label htmlFor="confirmPassword">Confirm Password *</Label>
               <Input
@@ -355,7 +355,7 @@ const RegisterPage: React.FC = () => {
               />
             </FormGroup>
           </FormRow>
-          
+
           <FormGroup>
             <Label htmlFor="companyName">Company Name *</Label>
             <Input
@@ -367,7 +367,7 @@ const RegisterPage: React.FC = () => {
               required
             />
           </FormGroup>
-          
+
           <FormGroup>
             <Label htmlFor="role">Account Type *</Label>
             <Select
@@ -381,7 +381,7 @@ const RegisterPage: React.FC = () => {
               <option value="transporter">Logistics Provider</option>
             </Select>
           </FormGroup>
-          
+
           <CheckboxGroup>
             <Checkbox
               id="agreeTerms"
@@ -395,14 +395,14 @@ const RegisterPage: React.FC = () => {
               I agree to the <Link to="/terms">Terms of Service</Link> and <Link to="/privacy">Privacy Policy</Link>
             </CheckboxLabel>
           </CheckboxGroup>
-          
+
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          
+
           <Button type="submit" disabled={isLoading}>
             {isLoading ? 'Creating Account...' : 'Create Account'}
           </Button>
         </Form>
-        
+
         <BottomText>
           Already have an account? <Link to="/login">Sign in</Link>
         </BottomText>
