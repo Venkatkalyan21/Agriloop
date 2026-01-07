@@ -263,8 +263,9 @@ const MarketplacePage: React.FC = () => {
     const fetchListings = async () => {
       try {
         setLoading(true);
-        // Using relative path assuming proxy is set up in vite.config.ts, otherwise might need full URL
-        const response = await fetch('http://localhost:4000/api/listings');
+        // Use environment variable for API URL
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+        const response = await fetch(`${apiUrl}/api/listings`);
         if (!response.ok) {
           throw new Error('Failed to fetch listings');
         }
