@@ -25,12 +25,22 @@ if (process.env.DATABASE_URL) {
 
 // Test the connection
 pool.on('connect', () => {
-  console.log('Connected to the PostgreSQL database');
+  console.log('✅ Connected to the PostgreSQL database');
 });
 
 pool.on('error', (err) => {
-  console.error('Error connecting to the database:', err);
-  process.exit(1);
+  console.error('⚠️ Unexpected error on idle database client:', err);
+  // Don't exit - let the server continue running
+});
+
+// Test connection on startup (non-blocking)
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('❌ Database connection test failed:', err.message);
+    console.log('⚠️  Server will start but database operations may fail');
+  } else {
+    console.log('✅ Database connection test successful');
+  }
 });
 
 export default pool; 
