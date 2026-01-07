@@ -20,11 +20,7 @@ const registrationSchema = Joi.object({
   state: Joi.string().optional(),
   country: Joi.string().optional(),
   postal_code: Joi.string().optional(),
-  company_type: Joi.string().valid('manufacturer', 'recycler', 'processor', 'distributor').when('role', {
-    is: 'company',
-    then: Joi.required(),
-    otherwise: Joi.optional()
-  }),
+  company_type: Joi.string().valid('manufacturer', 'recycler', 'processor', 'distributor').optional(),
   industry_sector: Joi.string().optional()
 });
 
