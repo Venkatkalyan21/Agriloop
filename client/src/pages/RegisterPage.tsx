@@ -224,7 +224,6 @@ const RegisterPage: React.FC = () => {
 
       // Use our api client instead of direct axios
       const response = await api.post('/api/auth/register', {
-        name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         password: formData.password,
         company_name: formData.companyName,
